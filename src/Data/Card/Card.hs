@@ -13,14 +13,11 @@ data CardName = One
                 | Jack
                 | Queen
                 | King
-                | Ace deriving (Eq, Ord, Enum)
+                | Ace deriving (Eq, Ord, Enum, Show)
 
-data Suite = Hearts | Diamonds | Spades | Clubs deriving (Eq)
+data Suite = Hearts | Diamonds | Spades | Clubs deriving (Eq, Show)
 
-data Card = Card CardName Suite
-
-instance Eq Card where
-    Card namex suitex == Card namey suitey = (namex == namey) && (suitex == suitey)
+data Card = Card CardName Suite deriving (Eq, Show)
 
 instance Ord Card where
     (Card namex _) `compare` (Card namey _) = namex `compare` namey
