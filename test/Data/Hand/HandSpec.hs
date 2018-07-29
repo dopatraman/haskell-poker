@@ -38,3 +38,18 @@ spec = do
                         Card Three Diamonds,
                         Card Jack Hearts)
             threeOfAKind hand == Nothing
+    describe "fullHouse" $ do
+        it "should return a Maybe Hand" $ do
+            let hand = (Card One Hearts,
+                        Card One Spades,
+                        Card Two Hearts,
+                        Card Two Diamonds,
+                        Card Two Clubs)
+            fullHouse hand == Just (FullHouse Two One)
+        it "should return Nothing" $ do
+            let hand = (Card One Hearts,
+                        Card One Spades,
+                        Card Two Hearts,
+                        Card Three Diamonds,
+                        Card Jack Hearts)
+            fullHouse hand == Nothing

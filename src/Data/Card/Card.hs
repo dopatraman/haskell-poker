@@ -1,6 +1,7 @@
 module Data.Card.Card   where
 
-data CardName = One
+data CardName = Joker
+                | One
                 | Two
                 | Three
                 | Four

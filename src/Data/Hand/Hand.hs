@@ -50,14 +50,13 @@ threeOfAKind u
 
 fullHouse :: Unsorted -> Maybe Hand
 fullHouse u
-    | k2 /= Nothing && k3 /= Nothing && namek2 /= namek3 = Just (FullHouse namek3 namek2)
+    | k2 /= Nothing && k3 /= Nothing && (name k2) /= (name k3) = Just (FullHouse (name k3) (name k2))
     | otherwise = Nothing
     where   k2 = twoOfAKind u
             k3 = threeOfAKind u
-            name2 (Just (TwoOfAKind name)) = name
-            name3 (Just (ThreeOfAKind name)) = name
-            namek2 = name2 k2
-            namek3 = name3 k3
+            cardName (TwoOfAKind name) = name
+            cardName (ThreeOfAKind name) = name
+            name k = maybe Joker (\x -> cardName x) k
 
 toList :: Unsorted -> [Card]
 toList (f1, f2, f3, turn, riv) = [f1, f2, f3, turn, riv]
