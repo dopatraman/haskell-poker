@@ -16,9 +16,9 @@ data CardName = Joker
                 | King
                 | Ace deriving (Eq, Ord, Enum, Show)
 
-data Suite = Hearts | Diamonds | Spades | Clubs deriving (Eq, Show)
+data Suit = Hearts | Diamonds | Spades | Clubs deriving (Eq, Show)
 
-data Card = Card CardName Suite deriving (Show)
+data Card = Card CardName Suit deriving (Show)
 
 instance Eq Card where
     Card namex _ == Card namey _ = namex == namey
