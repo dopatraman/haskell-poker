@@ -2,6 +2,7 @@ module Data.Hand.Hand  where
 
 import Data.Card.Card
 import Data.Hand.Unigraph
+import Data.List
 
 type Unsorted = (Card, Card, Card, Card, Card)
 data Hand = HighCard CardName
@@ -44,8 +45,8 @@ threeOfAKind :: Unsorted -> Maybe Hand
 threeOfAKind u
     | (not . null) matches = Just (ThreeOfAKind (cardName . head $ matches))
     | otherwise = Nothing
-    where   pairs = combos (toList u) 3
-            matches = concat $ dropWhile (not . same) $ pairs
+    where   trips = combos (toList u) 3
+            matches = concat $ dropWhile (not . same) $ trips
             cardName (Card name _) = name
 
 fullHouse :: Unsorted -> Maybe Hand
@@ -57,6 +58,40 @@ fullHouse u
             cardName (TwoOfAKind name) = name
             cardName (ThreeOfAKind name) = name
             name k = maybe Joker (\x -> cardName x) k
+
+fourOfAKind :: Unsorted -> Maybe Hand
+fourOfAKind u
+    | (not . null) matches = Just (FourOfAKind (cardName . head $ matches))
+    | otherwise = Nothing
+    where   quads = combos (toList u) 4
+            matches = concat $ dropWhile (not . same) $ quads
+            cardName (Card name _) = name
+
+straight :: Unsorted -> Maybe Hand
+straight u
+    | isConsecutive (map value cards) = Just (Straight (name . last $ cards))
+    | otherwise = Nothing
+    where   cards = sort $ toList u
+            name (Card name _) = name
+            value c = fromEnum (name c)
+
+flush :: Unsorted -> Maybe Hand
+flush u
+    | same suits = Just Flush
+    | otherwise = Nothing
+    where   suits = map suit (toList u)
+            suit (Card _ s) = s
+
+straightFlush :: Unsorted -> Maybe Hand
+straightFlush u = undefined
+
+isConsecutive :: (Eq a, Num a) => [a] -> Bool
+isConsecutive xs = isConsecutive' xs False
+    where   isConsecutive' [] acc = acc
+            isConsecutive' (x:[]) acc = acc
+            isConsecutive' (x:y:ys) acc
+                | x + 1 == y = isConsecutive' (y:ys) True
+                | otherwise = False
 
 toList :: Unsorted -> [Card]
 toList (f1, f2, f3, turn, riv) = [f1, f2, f3, turn, riv]
