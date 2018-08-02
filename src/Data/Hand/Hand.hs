@@ -83,7 +83,14 @@ flush u
             suit (Card _ s) = s
 
 straightFlush :: Unsorted -> Maybe Hand
-straightFlush u = undefined
+straightFlush u 
+    | (isStraight u) && (isFlush u) = Just (StraightFlush (last cards))
+    | otherwise = Nothing
+    where   cards = toList u
+            isStraight = isX . straight
+            isFlush = isX . flush
+            isX (Just _) = True
+            isX Nothing = False
 
 isConsecutive :: (Eq a, Num a) => [a] -> Bool
 isConsecutive xs = isConsecutive' xs False

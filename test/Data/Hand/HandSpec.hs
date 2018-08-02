@@ -107,6 +107,16 @@ spec = do
             flush hand == Nothing
     describe "straightFlush" $ do
         it "should return a Maybe Hand" $ do
-            pending
+            let hand = (Card Ten Hearts,
+                        Card Jack Hearts,
+                        Card Queen Hearts,
+                        Card King Hearts,
+                        Card Ace Hearts)
+            straightFlush hand == Just (StraightFlush (Card Ace Hearts))
         it "should return Nothing" $ do
-            pending
+            let hand = (Card One Hearts,
+                        Card Two Hearts,
+                        Card Four Hearts,
+                        Card Ten Spades,
+                        Card Jack Hearts)
+            straightFlush hand == Nothing
