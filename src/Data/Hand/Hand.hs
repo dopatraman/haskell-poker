@@ -4,7 +4,7 @@ import Data.Card.Card
 import Data.Hand.Unigraph
 import Data.List
 
-type Unsorted = (Card, Card, Card, Card, Card)
+type Unsorted = [Card]
 data Hand = HighCard CardName
             | TwoOfAKind CardName
             | ThreeOfAKind CardName
@@ -18,7 +18,9 @@ playedHand :: (Card, Card, Card, Card, Card) -> (Card, Card) -> Hand
 playedHand community player = maximum $ map highestHand (unsortedHands community player)
 
 unsortedHands :: (Card, Card, Card, Card, Card) -> (Card, Card) -> [Unsorted]
-unsortedHands community player = undefined
+unsortedHands community player = combos (toListCommunity community ++ toListPlayer player) 5
+    where   toListCommunity (f1, f2, f3, turn, riv) = [f1, f2, f3, turn, riv]
+            toListPlayer (p1, p2) = [p1, p2]
 
 highestHand :: Unsorted -> Hand
 highestHand u = maximum $ possibleHands u
@@ -37,7 +39,7 @@ twoOfAKind :: Unsorted -> Maybe Hand
 twoOfAKind u
     | (not . null) matches = Just (TwoOfAKind (cardName . head $ matches))
     | otherwise = Nothing
-    where   pairs = combos (toList u) 2
+    where   pairs = combos u 2
             matches = concat $ dropWhile (not . same) $ pairs
             cardName (Card name _) = name
 
@@ -45,7 +47,7 @@ threeOfAKind :: Unsorted -> Maybe Hand
 threeOfAKind u
     | (not . null) matches = Just (ThreeOfAKind (cardName . head $ matches))
     | otherwise = Nothing
-    where   trips = combos (toList u) 3
+    where   trips = combos u 3
             matches = concat $ dropWhile (not . same) $ trips
             cardName (Card name _) = name
 
@@ -63,7 +65,7 @@ fourOfAKind :: Unsorted -> Maybe Hand
 fourOfAKind u
     | (not . null) matches = Just (FourOfAKind (cardName . head $ matches))
     | otherwise = Nothing
-    where   quads = combos (toList u) 4
+    where   quads = combos u 4
             matches = concat $ dropWhile (not . same) $ quads
             cardName (Card name _) = name
 
@@ -71,7 +73,7 @@ straight :: Unsorted -> Maybe Hand
 straight u
     | isConsecutive (map value cards) = Just (Straight (name . last $ cards))
     | otherwise = Nothing
-    where   cards = sort $ toList u
+    where   cards = sort $ u
             name (Card name _) = name
             value c = fromEnum (name c)
 
@@ -79,15 +81,14 @@ flush :: Unsorted -> Maybe Hand
 flush u
     | same suits = Just Flush
     | otherwise = Nothing
-    where   suits = map suit (toList u)
+    where   suits = map suit u
             suit (Card _ s) = s
 
 straightFlush :: Unsorted -> Maybe Hand
 straightFlush u 
-    | (isStraight u) && (isFlush u) = Just (StraightFlush (last cards))
+    | (isStraight u) && (isFlush u) = Just (StraightFlush (last u))
     | otherwise = Nothing
-    where   cards = toList u
-            isStraight = isX . straight
+    where   isStraight = isX . straight
             isFlush = isX . flush
             isX (Just _) = True
             isX Nothing = False
@@ -99,9 +100,6 @@ isConsecutive xs = isConsecutive' xs False
             isConsecutive' (x:y:ys) acc
                 | x + 1 == y = isConsecutive' (y:ys) True
                 | otherwise = False
-
-toList :: Unsorted -> [Card]
-toList (f1, f2, f3, turn, riv) = [f1, f2, f3, turn, riv]
 
 same :: Eq a => [a] -> Bool
 same xs = all (== head xs) (tail xs)
