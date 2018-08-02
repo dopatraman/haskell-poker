@@ -8,6 +8,35 @@ import Data.Hand.Hand
 
 spec :: Spec
 spec = do
+    describe "highestHand" $ do
+        it "should get the highest hand for a set of 5 Cards" $ do
+            let hand = (Card One Hearts,
+                        Card One Spades,
+                        Card Two Hearts,
+                        Card Three Diamonds,
+                        Card Jack Hearts)
+            highestHand hand == TwoOfAKind One
+        it "should get the highest hand out of possible hands" $ do
+            let hand = (Card Five Hearts,
+                        Card Five Spades,
+                        Card Ten Clubs,
+                        Card Ten Diamonds,
+                        Card Ten Hearts)
+            highestHand hand === FullHouse Ten Five
+        it "should get the highest hand when cards are out of order" $ do
+            let hand = (Card Ten Hearts,
+                        Card Jack Diamonds,
+                        Card Five Spades,
+                        Card Five Hearts,
+                        Card Ace Spades)
+            highestHand hand == TwoOfAKind Five
+        it "should get the highest straight out of order" $ do
+            let hand = (Card Ace Spades,
+                        Card Jack Diamonds,
+                        Card Ten Clubs,
+                        Card King Hearts,
+                        Card Queen Hearts)
+            highestHand hand == Straight Ace
     describe "twoOfAKind" $ do
         it "should return a Maybe Hand" $ do
             let hand = (Card One Hearts,

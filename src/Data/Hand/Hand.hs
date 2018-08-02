@@ -24,8 +24,8 @@ highestHand :: Unsorted -> Hand
 highestHand u = maximum $ possibleHands u
 
 possibleHands :: Unsorted -> [Hand]
-possibleHands u = getValues $ filterNothings $ pipeline $ toList u
-    where   cardFns = undefined
+possibleHands u = getValues $ filterNothings $ pipeline u
+    where   cardFns = [twoOfAKind, threeOfAKind, fullHouse, fourOfAKind, straight, flush, straightFlush]
             pipeline unsorted = map ($ unsorted) cardFns
             filterNothings maybeList = filter (\x -> x /= Nothing) maybeList
             getValues maybeList = map just maybeList
