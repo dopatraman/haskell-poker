@@ -10,12 +10,12 @@ spec :: Spec
 spec = do
     describe "highestHand" $ do
         it "should get the highest hand for a set of 5 Cards" $ do
-            let hand = [Card One Hearts,
-                        Card One Spades,
+            let hand = [Card Six Hearts,
+                        Card Six Spades,
                         Card Two Hearts,
                         Card Three Diamonds,
                         Card Jack Hearts]
-            highestHand hand == TwoOfAKind One
+            highestHand hand == TwoOfAKind Six
         it "should get the highest hand out of possible hands" $ do
             let hand = [Card Five Hearts,
                         Card Five Spades,
@@ -39,14 +39,14 @@ spec = do
             highestHand hand == Straight Ace
     describe "twoOfAKind" $ do
         it "should return a Maybe Hand" $ do
-            let hand = [Card One Hearts,
-                        Card One Spades,
+            let hand = [Card Six Hearts,
+                        Card Six Spades,
                         Card Two Hearts,
                         Card Three Diamonds,
                         Card Jack Hearts]
-            twoOfAKind hand == Just (TwoOfAKind One)
+            twoOfAKind hand == Just (TwoOfAKind Six)
         it "should return Nothing" $ do
-            let hand = [Card One Hearts,
+            let hand = [Card Six Hearts,
                         Card Four Spades,
                         Card Two Hearts,
                         Card Three Diamonds,
@@ -54,81 +54,81 @@ spec = do
             twoOfAKind hand == Nothing
     describe "threeOfAKind" $ do
         it "should return a Maybe Hand" $ do
-            let hand = [Card One Hearts,
-                        Card One Spades,
-                        Card One Diamonds,
+            let hand = [Card Six Hearts,
+                        Card Six Spades,
+                        Card Six Diamonds,
                         Card Three Diamonds,
                         Card Jack Hearts]
-            threeOfAKind hand == Just (ThreeOfAKind One)
+            threeOfAKind hand == Just (ThreeOfAKind Six)
         it "should return Nothing" $ do
-            let hand = [Card One Hearts,
-                        Card One Spades,
+            let hand = [Card Six Hearts,
+                        Card Six Spades,
                         Card Two Hearts,
                         Card Three Diamonds,
                         Card Jack Hearts]
             threeOfAKind hand == Nothing
     describe "fullHouse" $ do
         it "should return a Maybe Hand" $ do
-            let hand = [Card One Hearts,
-                        Card One Spades,
+            let hand = [Card Six Hearts,
+                        Card Six Spades,
                         Card Two Hearts,
                         Card Two Diamonds,
                         Card Two Clubs]
-            fullHouse hand == Just (FullHouse Two One)
+            fullHouse hand == Just (FullHouse Two Six)
         it "should return Nothing" $ do
-            let hand = [Card One Hearts,
-                        Card One Spades,
+            let hand = [Card Six Hearts,
+                        Card Six Spades,
                         Card Two Hearts,
                         Card Three Diamonds,
                         Card Jack Hearts]
             fullHouse hand == Nothing
     describe "fourOfAKind" $ do
         it "should return a Maybe Hand" $ do
-            let hand = [Card One Hearts,
-                        Card One Spades,
-                        Card One Diamonds,
-                        Card One Clubs,
+            let hand = [Card Six Hearts,
+                        Card Six Spades,
+                        Card Six Diamonds,
+                        Card Six Clubs,
                         Card Jack Hearts]
-            fourOfAKind hand == Just (FourOfAKind One)
+            fourOfAKind hand == Just (FourOfAKind Six)
         it "should return Nothing" $ do
-            let hand = [Card One Hearts,
-                        Card One Spades,
-                        Card One Diamonds,
+            let hand = [Card Six Hearts,
+                        Card Six Spades,
+                        Card Six Diamonds,
                         Card Two Clubs,
                         Card Jack Hearts]
             fourOfAKind hand == Nothing
     describe "straight" $ do
         it "should return a Maybe Hand" $ do
-            let hand = [Card One Hearts,
-                        Card Two Hearts,
+            let hand = [Card Two Hearts,
                         Card Three Clubs,
                         Card Four Diamonds,
-                        Card Five Spades]
-            straight hand == Just (Straight Five)
+                        Card Five Spades,
+                        Card Six Spades]
+            straight hand == Just (Straight Six)
         it "should return a Maybe Hand for an unsorted list" $ do
-            let hand = [Card One Hearts,
-                        Card Three Clubs,
+            let hand = [Card Three Clubs,
                         Card Two Hearts,
                         Card Four Diamonds,
-                        Card Five Spades]
-            straight hand == Just (Straight Five)
+                        Card Five Spades,
+                        Card Six Hearts]
+            straight hand == Just (Straight Six)
         it "should return Nothing" $ do
-            let hand = [Card One Hearts,
-                        Card One Spades,
-                        Card One Diamonds,
+            let hand = [Card Six Hearts,
+                        Card Six Spades,
+                        Card Six Diamonds,
                         Card Two Clubs,
                         Card Jack Hearts]
             straight hand == Nothing
     describe "flush" $ do
         it "should return a Maybe Hand" $ do
-            let hand = [Card One Hearts,
+            let hand = [Card Six Hearts,
                         Card Two Hearts,
                         Card Four Hearts,
                         Card Ten Hearts,
                         Card Jack Hearts]
             flush hand == Just Flush
         it "should return Nothing" $ do
-            let hand = [Card One Hearts,
+            let hand = [Card Six Hearts,
                         Card Two Hearts,
                         Card Four Hearts,
                         Card Ten Spades,
@@ -143,7 +143,7 @@ spec = do
                         Card Ace Hearts]
             straightFlush hand == Just (StraightFlush (Card Ace Hearts))
         it "should return Nothing" $ do
-            let hand = [Card One Hearts,
+            let hand = [Card Six Hearts,
                         Card Two Hearts,
                         Card Four Hearts,
                         Card Ten Spades,

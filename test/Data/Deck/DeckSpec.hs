@@ -8,4 +8,4 @@ spec :: Spec
 spec = do
     describe "deck" $ do
         it "should return a full deck" $ do
-            pending
+            (length . cards $ deck) == (4 * 13)

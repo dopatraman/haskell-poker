@@ -15,7 +15,7 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Data.Card.Card, Data.Hand.Hand, Data.Hand.Unigraph, Data.Deck.Deck
+  exposed-modules:     Data.Card.Card, Data.Hand.Hand, Data.Hand.Unigraph, Data.Deck.Deck, Table
   build-depends:       base >= 4.7 && < 5
   default-language:    Haskell2010
 
