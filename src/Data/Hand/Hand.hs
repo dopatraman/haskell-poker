@@ -1,12 +1,17 @@
 module Data.Hand.Hand  where
 
+import Data.Function
+import Data.List
+import Data.Ord
+
 import Data.Card.Card
 import Data.Hand.Unigraph
-import Data.List
+
 
 type Unsorted = [Card]
 data Hand = HighCard CardName
             | TwoOfAKind CardName
+            | TwoPair CardName CardName
             | ThreeOfAKind CardName
             | FullHouse CardName CardName
             | FourOfAKind CardName
@@ -34,6 +39,23 @@ possibleHands u = getValues $ filterNothings $ pipeline u
             just m = case m of Just a -> a
 
 -----------------------------------------------------------------
+
+_OfAKind :: Unsorted -> Maybe Hand
+_OfAKind u = case map length $ equalGroups of
+    (4:_)   -> Just (FourOfAKind firstCard)
+    (3:2:_) -> Just (FullHouse firstCard secondCard)
+    (3:_)   -> Just (ThreeOfAKind firstCard)
+    (2:2:_) -> Just (TwoPair firstCard secondCard)
+    (2:_)   -> Just (TwoOfAKind firstCard)
+    _       -> Just (HighCard firstCard)
+    where   equalGroups = sortByLength $ groupByEq $ sort u
+            sortByLength = sortBy (descLength <> descValue)
+            descLength = flip $ comparing length
+            descValue = flip compare
+            groupByEq = groupBy ((==) `on` cardName)
+            asCards = map cardName $ concat equalGroups
+            firstCard = head $ asCards
+            secondCard = head $ tail $ asCards
 
 twoOfAKind :: Unsorted -> Maybe Hand
 twoOfAKind u

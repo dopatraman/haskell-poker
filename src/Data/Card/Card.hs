@@ -19,6 +19,12 @@ data Suit = Hearts | Diamonds | Spades | Clubs deriving (Eq, Show)
 
 data Card = Card CardName Suit deriving (Show)
 
+cardName :: Card -> CardName
+cardName (Card name _) = name
+
+suit :: Card -> Suit
+suit (Card _ s) = s
+
 instance Eq Card where
     Card namex _ == Card namey _ = namex == namey
 
